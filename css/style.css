@@ -1,0 +1,235 @@
+  @import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
+  
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Silkscreen', cursive;
+}
+
+.game-board {
+    width: 80%;
+    height: 500px;
+    border: 1px solid black;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    background: rgb(47,178,227);
+    background: linear-gradient(180deg, rgba(47,178,227,1) 10%, rgba(255,255,255,1) 100%);}
+
+.pipe {
+    position: absolute;
+    bottom: 0;
+    width: 80px;
+    right: -80px;
+    z-index: 20;
+}
+
+.mario {
+    position: absolute;
+    width: 200px;
+    bottom: 0px;
+    z-index: 25;
+}
+
+.jump {
+    animation: jump 1s ease-in;
+}
+
+.death {
+    animation: death 1.5s ease-in ;
+}
+
+.clouds {
+    position: absolute;
+    width: 400px;
+    top: 10%;
+    animation: clouds-animation 80s linear infinite;
+    z-index: 1;
+}
+
+.cloud {
+    position: absolute;
+    width: 350px;
+    top: 10%;
+    animation: cloud-animation 60s infinite;
+    z-index: 1;
+
+}
+.backs {
+    width: 100%;
+    z-index: 0;
+    position: absolute;
+    animation: backgrounds 200s infinite linear ;
+    bottom: -80px;
+}
+
+.back {
+    width: 100%;
+    z-index: 0;
+    position: absolute;
+    animation: backgrounda 210s infinite linear;
+    bottom: -80px;
+
+}
+
+
+@keyframes backgrounds {
+    from {
+        right: 0;
+    }
+    to {
+        right: 100%;
+    }
+} 
+
+
+@keyframes backgrounda {
+    from {
+        right: -80%;
+    }
+    to {
+        right: 0%;
+    }
+} 
+
+
+
+
+@keyframes background {
+    to {
+        right: 100%;
+        transform: translate(0);
+      }
+}
+
+
+@keyframes death {
+    0% {
+        transform: scale(1);
+        bottom:10%;
+    }
+    50% {
+        transform: scale(1.2);
+        bottom:60%;
+    }
+    100% {
+        transform: scale(1);
+        bottom:0%;
+    }
+}
+
+@keyframes pipe-animation {
+    from {
+        right: 0px;
+    }
+    to {
+        right: 100%;
+    }
+} 
+
+@keyframes clouds-animation {
+    from {
+        right: -800px;
+    }
+    to {
+        right: 100%;
+    }
+} 
+
+
+@keyframes cloud-animation {
+    from {
+        right: -400px;
+    }
+    to {
+        right: 100%;
+    }
+} 
+
+@keyframes jump {
+    0% {
+        bottom: 0px;
+    }
+    20% {
+        bottom: 250px;
+    }
+    80% {
+        bottom: 250px;
+    }
+    100% {
+        bottom: 0px;
+    }
+}
+
+
+/* MENU */
+
+.menu {
+    position: relative;
+    margin: 0 auto;
+    width: 40%;
+    margin: 0 auto;
+    display: block;
+    z-index: 10;
+}
+.btn {
+    font-size: 40px;
+    margin:20px;
+    padding: 5px;
+    border-radius: 3px;
+
+}
+.btn {
+    background-color: rgb(181, 206, 180);
+    border-radius: 5px;
+    border: 2px solid black;
+    box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.15);
+}
+.btn:hover {
+    color: white;
+}
+
+
+/* CREDITOS */
+.creditos {
+    position: absolute;
+    left: 25%;
+    top: 25%;
+    padding: 30px;
+    background-color: rgb(181, 206, 180);
+    margin: 0 auto;
+    width: 50%;
+    height: 50%;
+    font-size: large;
+    border-radius: 5px;
+    border: 2px solid black;
+    box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.30);
+    display: none;
+    z-index: 10;
+
+}
+.icon {
+    position: absolute;
+
+}
+.close {
+    cursor: pointer;
+    top: 20px;
+    right: 20px;
+    font-size: 20px;
+}
+.close:hover {
+    color: red;
+}
+
+
+.duck {
+    animation: ducking 1s;
+}
+
+@keyframes ducking {
+    0% {
+        bottom:0%s
+    } 
+}
