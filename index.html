@@ -12,36 +12,38 @@
         <div class="game-board">
             <img src="./assets/pipe.png" class="pipe">
             <img src="./assets/mario.gif" class="mario">
-            <img src="./assets/clouds.png" class="clouds">
-            <img src="./assets/cloud.png" class="cloud">
-            <img src="./assets/background.png" class="back">
-            <img src="./assets/background.png" class="backs">
+            <img src="./assets/clouds.png" id="clouds">
+
+            <div id="clouds"> </div>
+            <div id="montains"> </div>
+            <div id="chao"> </div>
 
 
 
 
             <div class="game-info">
-                <h3 id = "sad" class="record">Ultimo recorde: 0</h3>
-                <h3 class="life">♡♡♡</h3>
+                <h3 class="record">Ultimo recorde: 0</h3>
             </div>
 
           
             <div class="menu overlay">
-                <button type="button" class="btn Start" onclick="start()">Novo jogo</button>
-                <br><button type="button" class="btn Credit" onclick="toggle('.creditos')">Créditos</button>
-                <br><button type="button" class="btn Share" onclick="share()">Compartilhar</button>
+                <button type="button" class="btn Start" onclick="startGame()">Novo jogo</button>
+                <br><button type="button" class="btn Credit" onclick="toggleCreditos('.creditos')">Créditos</button>
+                <br><button type="button" class="btn Share" onclick="compartilhar()">Compartilhar</button>
             </div>
     
 
-            <div class="creditos" >Olá, sou o artur e "criador" desse joguinho. <br>
+            <div class="creditos">
+                <p class="icon close overlay" onclick="toggleCreditos('.creditos')">
+                    <strong>X</strong>
+                </p>
+                Olá, sou o artur e "criador" desse joguinho. <br>
                 Por aqui que vou agradecer por me ajudarem ou me inspirarem pelo primeiro joguinho.<br>
                 Creditos:<br>
                     • Sao felipe<br>
                     • Gustave Dore<br>
                     • Jorginha do grau<br>
-                <p class="icon close overlay" onclick="toggle('.creditos')">
-                    <strong>X</strong>
-                </p>
+
         </div>
 </body>
 </html>

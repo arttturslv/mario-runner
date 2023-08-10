@@ -1,5 +1,7 @@
   @import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
+
   
+/* Global */
 * {
     margin: 0;
     padding: 0;
@@ -7,149 +9,154 @@
     font-family: 'Silkscreen', cursive;
 }
 
+/* tela do jogo */
 .game-board {
-    width: 80%;
-    height: 500px;
+    width: 99%;
+    height: 600px;
     border: 1px solid black;
-    margin: 0 auto;
     position: relative;
     overflow: hidden;
     background: rgb(47,178,227);
-    background: linear-gradient(180deg, rgba(47,178,227,1) 10%, rgba(255,255,255,1) 100%);}
+    background: linear-gradient(180deg, rgba(47,178,227,1) 10%, rgba(255,255,255,1) 100%);
+    margin: 0 auto;
+    display: flex;
+}
+.game-info {
+    padding: 10px;
+    position: absolute;
+}
+.record {
+    font-size: 1.3vh;
+}
 
+/* cano */
 .pipe {
     position: absolute;
-    bottom: 0;
-    width: 80px;
+    bottom: 50px;
+    width: 5%;
     right: -80px;
     z-index: 20;
 }
 
+/* mario */
 .mario {
     position: absolute;
-    width: 200px;
-    bottom: 0px;
+    width: 15%;
+    max-width: 10%;
+    bottom: 50px;
     z-index: 25;
 }
 
 .jump {
-    animation: jump 1s ease-in;
+    animation: mario-jump 1s ease-in;
 }
-
 .death {
-    animation: death 1.5s ease-in ;
+    animation: mario-death 1.5s ease-in ;
 }
+.duck {
+    animation: mario-ducking 1s;
+}
+/* ambiente */
 
-.clouds {
+#chao {
+    width: auto;
+    height: 200px;
+    min-width: 100%;
     position: absolute;
-    width: 400px;
-    top: 10%;
-    animation: clouds-animation 80s linear infinite;
-    z-index: 1;
-}
-
-.cloud {
+    bottom: 0%;
+    z-index: 555;
+    background: url("/assets/chao.png");
+    background-repeat: repeat;
+    background-position: 0 0;
+    background-size: auto 100%;
+  /*adjust s value for speed*/
+  }
+  
+  
+  @keyframes slide {
+    from {
+      background-position: 0 0;
+    }
+  /*use negative width if you want it to flow right to left else and positive for left to right*/
+    to {
+      background-position: -10000px 0;
+    }
+  }
+#clouds {
     position: absolute;
-    width: 350px;
-    top: 10%;
-    animation: cloud-animation 60s infinite;
-    z-index: 1;
-
-}
-.backs {
-    width: 100%;
+    width: 10%;
+    top: 15%; /* 10 ate 20*/
     z-index: 0;
-    position: absolute;
-    animation: backgrounds 200s infinite linear ;
-    bottom: -80px;
+    animation: clouds-animation 100s linear infinite;
 }
 
-.back {
+#montains {
     width: 100%;
-    z-index: 0;
+    height: 50%;
     position: absolute;
-    animation: backgrounda 210s infinite linear;
-    bottom: -80px;
-
+    background: url("/assets/background.png");
+    background-repeat:repeat;
+    background-position: 0 0;
+    background-size: auto 100%;    
+    bottom: 0px;
+    margin: 0;
+    padding: 0;   
 }
 
 
-@keyframes backgrounds {
-    from {
-        right: 0;
-    }
-    to {
-        right: 100%;
-    }
-} 
+/* menu */
+.menu {
+    max-width: 40%;
+    margin: auto;
+    display: block;
+    z-index: 10;
+    position: relative;
+}
+.btn {
+    width: 100%;
+    font-size: 100%;
+    margin:15px;
+    padding: 5px;
+    border-radius: 3px;
+    background-color: rgb(181, 206, 180);
+    border-radius: 5px;
+    border: 2px solid black;
+    box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.15);
+}
+.btn:hover {
+    color: rgb(39, 61, 46);
+}
 
-
-@keyframes backgrounda {
-    from {
-        right: -80%;
-    }
-    to {
-        right: 0%;
-    }
-} 
-
-
-
-
-@keyframes background {
-    to {
-        right: 100%;
-        transform: translate(0);
-      }
+/* creditos */
+.creditos {
+    position: relative;
+    padding: 30px;
+    background-color: rgb(181, 206, 180);
+    font-size: 0.65em;
+    border-radius: 5px;
+    border: 2px solid black;
+    box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.30);
+    display: none;
+    z-index: 10;
+    margin: auto;
+}
+.close {
+    position: absolute;
+    cursor: pointer;
+    right: 2%;
+    top: 3%;
+    font-size: 100%;
+}
+.close:hover {
+    color: red;
 }
 
 
-@keyframes death {
+
+/* animações */
+@keyframes mario-jump {
     0% {
-        transform: scale(1);
-        bottom:10%;
-    }
-    50% {
-        transform: scale(1.2);
-        bottom:60%;
-    }
-    100% {
-        transform: scale(1);
-        bottom:0%;
-    }
-}
-
-@keyframes pipe-animation {
-    from {
-        right: 0px;
-    }
-    to {
-        right: 100%;
-    }
-} 
-
-@keyframes clouds-animation {
-    from {
-        right: -800px;
-    }
-    to {
-        right: 100%;
-    }
-} 
-
-
-@keyframes cloud-animation {
-    from {
-        right: -400px;
-    }
-    to {
-        right: 100%;
-    }
-} 
-
-@keyframes jump {
-    0% {
-        bottom: 0px;
+        bottom: 50px;
     }
     20% {
         bottom: 250px;
@@ -158,78 +165,90 @@
         bottom: 250px;
     }
     100% {
-        bottom: 0px;
+        bottom: 50px;
+    }
+}
+@keyframes mario-death {
+    0% {
+        transform: scale(1);
+        bottom:10%;
+    }
+    50% {
+        transform: scale(1.1);
+        bottom:60%;
+    }
+    100% {
+        transform: scale(1);
+        bottom: 50px;
+    }
+}
+@keyframes mario-ducking {
+    0% {
+        bottom: 50px;
+    } 
+}
+@keyframes pipe-animation {
+    from {
+        right: 0px;
+    }
+    to {
+        right: 100%;
+    }
+} 
+@keyframes clouds-animation {
+    from {
+        right: 0px;
+    }
+    to {
+        right: 100%;
+    }
+} 
+
+
+
+
+/* Smaller than standard 960 (devices and browsers) 
+@media only screen and (min-width: 959px) {
+        .creditos {
+            max-width: 35%;
+            font-size: 1.2em;
+        }
+
+}
+
+@media only screen and (max-width: 959px) {
+    .game-board {
+        height: 400px;
+    }
+    .btn {
+        font-size: 1rem;
     }
 }
 
-
-/* MENU */
-
-.menu {
-    position: relative;
-    margin: 0 auto;
-    width: 40%;
-    margin: 0 auto;
-    display: block;
-    z-index: 10;
-}
-.btn {
-    font-size: 40px;
-    margin:20px;
-    padding: 5px;
-    border-radius: 3px;
-
-}
-.btn {
-    background-color: rgb(181, 206, 180);
-    border-radius: 5px;
-    border: 2px solid black;
-    box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.15);
-}
-.btn:hover {
-    color: white;
+/* Tablet Portrait size to standard 960 (devices and browsers) 
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+    p{
+        font-size: 12px;
+    }
 }
 
-
-/* CREDITOS */
-.creditos {
-    position: absolute;
-    left: 25%;
-    top: 25%;
-    padding: 30px;
-    background-color: rgb(181, 206, 180);
-    margin: 0 auto;
-    width: 50%;
-    height: 50%;
-    font-size: large;
-    border-radius: 5px;
-    border: 2px solid black;
-    box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.30);
-    display: none;
-    z-index: 10;
-
-}
-.icon {
-    position: absolute;
-
-}
-.close {
-    cursor: pointer;
-    top: 20px;
-    right: 20px;
-    font-size: 20px;
-}
-.close:hover {
-    color: red;
+/* All Mobile Sizes (devices and browser) 
+@media only screen and (max-width: 767px) {
+    p{
+        font-size: 14px;
+    }
 }
 
-
-.duck {
-    animation: ducking 1s;
+/* Mobile Landscape Size to Tablet Portrait (devices and browsers) 
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+    p{
+        font-size: 9px;
+    }
 }
 
-@keyframes ducking {
-    0% {
-        bottom:0%s
-    } 
-}
+/* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) 
+@media only screen and (max-width: 479px) {
+    p{
+        font-size: 7px;
+    }
+}*/
