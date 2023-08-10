@@ -2,6 +2,7 @@ var gameStatus = false;
 var highest;
 var pontos = 0;
 var cron;
+var superman = true;
 
 const pipe = document.querySelector(".pipe");
 const mario = document.querySelector(".mario");
@@ -16,12 +17,11 @@ doSomething();
     async function sleep(time) {
         await new Promise(resolve => setTimeout(resolve, time))
       }
-      
       async function doSomething() {
         while ((true)) {
             console.log("aa")
-            clouds.style.top = getRandomArbitrary(10, 15)+'%';
-            clouds.style.width = getRandomArbitrary(10, 35)+'%';
+            clouds.style.top = getRandomArbitrary(10, 15)+'vw';
+            clouds.style.width = getRandomArbitrary(15, 40)+'vh';
                 await sleep(1000000);
         }
       }
@@ -44,7 +44,11 @@ function duck() {
 
 function death() {
     mario.classList.add("death");
-    document.querySelector(".menu").style.display = "block";
+
+    if(document.querySelector(".creditos").style.display != "block") {
+        document.querySelector(".menu").style.display = "block";
+    };
+    
     pipe.style.animation = "none";
     gameStatus = false;
     contadorPause();
@@ -131,23 +135,29 @@ function startGame() {
     loop();
 }
 
+
+
+function pixelsToPercentage(pixel) {
+    return (pixel / window.innerWidth) * 100;
+  }
+  
 function loop() {
     setInterval(() => {
+        const pipePositionpx = pipe.offsetLeft;
+        const marioPositionBottom = +window.getComputedStyle(mario).bottom.replace('px',''); //apaga o px para retornar apenas o valor. O '+' converte em numero
+        console.log(pixelsToPercentage(170));
 
-        const pipePosition = pipe.offsetLeft;
-        const marioPosition = +window.getComputedStyle(mario).bottom.replace('px',''); //apaga o px para retornar apenas o valor. O '+' converte em numero
-
-        if (pipePosition <= 170 && pipePosition > 0 && marioPosition < 80) { //se o tubo chegou a encostar no mario e o tubo ainda nao passou por ele e o mario nao tenha altura, o jogo para.
+        if (pipePositionpx <= pixelsToPercentage(170) && pipePositionpx > 0 && marioPositionBottom < 90 &&superman) { //se o tubo chegou a encostar no mario e o tubo ainda nao passou por ele e o mario nao tenha altura, o jogo para.
             pipe.style.animation = 'none';
             chao.style.animation = "none";
             montains.style.animation = "none";
 
-            pipe.style.left = `${pipePosition}px`;
+            pipe.style.left = `${pipePositionpx}px`;
 
-            mario.style.bottom = `${marioPosition}px`;
+            mario.style.bottom = `${marioPositionBottom}px`;
             mario.src = "./assets/game-over.png";
             mario.style.width = '5%';
-            mario.style.marginLeft = '60px';
+            // mario.style.marginLeft = '60px';
             
             death();
             clearInterval(loop);
@@ -175,7 +185,39 @@ function release(e){
   } else if (e.keyCode ===40 || e.keyCode===83 && gameStatus == false) {
     mario.src = "./assets/game-over.png";
     mario.style.width = '15%';
-    mario.style.marginLeft = '60px';
+    // mario.style.marginLeft = '60px';
   }
 }
 
+
+
+/*
+const secretSequence = ['j', 'u', 'm', 'p', 'j', 'e', 't'];
+let currentSequenceIndex = 0;
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === secretSequence[currentSequenceIndex]) {
+      currentSequenceIndex++;
+        console.log(event.key);
+      if (currentSequenceIndex === secretSequence.length) {
+        activateInvincibilityMode();
+        currentSequenceIndex = 0; // Reinicia o índice
+      }
+    } else {
+        console.log(event.key);
+
+      currentSequenceIndex = 0; // Reinicia se a tecla errada for pressionada
+    }
+  });
+  
+  function activateInvincibilityMode() {
+    superman = false;
+    // Ative o modo invencível aqui
+    console.log('Modo invencível ativado!');
+    mario.src="./assets/JUMPJET.gif"
+    console.log("clicado")
+
+  }
+
+
+ no desktop display, ele passa por 4 pipes até morrer no quinto, provavelmente é da conta*/

@@ -34,7 +34,7 @@
     position: absolute;
     bottom: 50px;
     width: 5%;
-    right: -80px;
+    right: -5%;
     z-index: 20;
 }
 
@@ -156,16 +156,16 @@
 /* animações */
 @keyframes mario-jump {
     0% {
-        bottom: 50px;
+        bottom: 10%px;
     }
     20% {
-        bottom: 250px;
+        bottom: 30%;
     }
     80% {
-        bottom: 250px;
+        bottom: 30%;
     }
     100% {
-        bottom: 50px;
+        bottom: 10%;
     }
 }
 @keyframes mario-death {
