@@ -2,7 +2,9 @@ var gameStatus = false;
 var highest;
 var pontos = 0;
 var cron;
-var superman = true;
+var superman = false;
+var qnt=0;
+var ducking = false;
 
 const pipe = document.querySelector(".pipe");
 const mario = document.querySelector(".mario");
@@ -10,19 +12,29 @@ const menu = document.querySelector(".menu");
 const informacaoRecorde = document.querySelector(".record");
 const chao = document.getElementById("chao");
 const montains = document.getElementById("montains");
+const bullet = document.querySelector(".bullet");
+const jet = document.querySelector(".jet");
 
 const clouds = document.getElementById("clouds");
-
 doSomething();
     async function sleep(time) {
         await new Promise(resolve => setTimeout(resolve, time))
       }
       async function doSomething() {
         while ((true)) {
-            console.log("aa")
             clouds.style.top = getRandomArbitrary(10, 15)+'vw';
             clouds.style.width = getRandomArbitrary(15, 40)+'vh';
-                await sleep(1000000);
+                await sleep(100000);
+        }
+      }
+
+      async function velocidade() {
+        while (gameStatus) {
+            if(qnt<7.5) {
+                qnt+=0.1;
+            }
+            animationSpeed (qnt);
+                await sleep(1000);
         }
       }
 
@@ -40,11 +52,12 @@ function jump() {
 
 function duck() {
     mario.classList.add("duck");
+    ducking = true;
 }
 
 function death() {
     mario.classList.add("death");
-
+    qnt=0;
     if(document.querySelector(".creditos").style.display != "block") {
         document.querySelector(".menu").style.display = "block";
     };
@@ -89,6 +102,7 @@ function toggleCreditos(name) {
 
         mario.src = "./assets/mario.gif";
         mario.style.width = '15%';
+
         mario.style.bottom = `50px`;
         document.querySelector(".menu").style.display = "block";  //abre o menu
     }
@@ -119,12 +133,10 @@ function contadorPause() {
 
 function startGame() {
     gameStatus = true;
+    velocidade();
 
     mario.classList.remove("death");
     pipe.style.removeProperty('left');
-    pipe.style.animation = "pipe-animation 2s linear infinite";
-    chao.style.animation = "slide 70s linear infinite";
-    montains.style.animation = "slide 200s linear infinite";
 
     menu.style.display = "none";
     mario.src = "./assets/mario.gif";
@@ -135,7 +147,20 @@ function startGame() {
     loop();
 }
 
+function animationSpeed (qnt) {
+    pipe.style.animation = `pipe-animation ${calcVelocity(4, 10, qnt)}s linear infinite`;
+    chao.style.animation = `slide ${calcVelocity(70, 10, qnt)}s linear infinite`;
+    montains.style.animation = `slide ${calcVelocity(200, 10, qnt)}s linear infinite`;
+    let random = Math.floor(Math.random() * 20);
+    if(random % 2 == 0 && random % 4 == 0 ) {
+        bullet.style.animation = `bullet-animation ${calcVelocity(4, 10, qnt)}s infinite linear`;
+    }
+}
 
+
+function calcVelocity (animSpeed, gameDiff, qnt) {
+    return animSpeed - (animSpeed/(gameDiff-qnt));
+}
 
 function pixelsToPercentage(pixel) {
     return (pixel / window.innerWidth) * 100;
@@ -145,19 +170,19 @@ function loop() {
     setInterval(() => {
         const pipePositionpx = pipe.offsetLeft;
         const marioPositionBottom = +window.getComputedStyle(mario).bottom.replace('px',''); //apaga o px para retornar apenas o valor. O '+' converte em numero
-        console.log(pixelsToPercentage(170));
+        const bulletPositionpx = bullet.offsetLeft;
 
-        if (pipePositionpx <= pixelsToPercentage(170) && pipePositionpx > 0 && marioPositionBottom < 90 &&superman) { //se o tubo chegou a encostar no mario e o tubo ainda nao passou por ele e o mario nao tenha altura, o jogo para.
+        if ((((bulletPositionpx <= pixelsToPercentage(170) && bulletPositionpx > 0) && ducking==false) || (pipePositionpx <= pixelsToPercentage(170) && pipePositionpx > 0 && marioPositionBottom < 90)) && superman==false) { //se o tubo chegou a encostar no mario e o tubo ainda nao passou por ele e o mario nao tenha altura, o jogo para.
             pipe.style.animation = 'none';
             chao.style.animation = "none";
             montains.style.animation = "none";
+            bullet.style.animation = "none";
 
             pipe.style.left = `${pipePositionpx}px`;
 
             mario.style.bottom = `${marioPositionBottom}px`;
             mario.src = "./assets/game-over.png";
             mario.style.width = '5%';
-            // mario.style.marginLeft = '60px';
             
             death();
             clearInterval(loop);
@@ -178,20 +203,22 @@ function press(e) {
 
 document.addEventListener('keyup', release);
 function release(e){
+    ducking = false;
+
     if(e.keyCode === 40 || e.keyCode === 83 && gameStatus) {
         mario.src = "./assets/mario.gif";
         mario.style.width = '15%';
         mario.classList.remove("duck");
   } else if (e.keyCode ===40 || e.keyCode===83 && gameStatus == false) {
     mario.src = "./assets/game-over.png";
-    mario.style.width = '15%';
+    mario.style.width = '5%';
     // mario.style.marginLeft = '60px';
   }
 }
 
 
 
-/*
+
 const secretSequence = ['j', 'u', 'm', 'p', 'j', 'e', 't'];
 let currentSequenceIndex = 0;
 
@@ -205,19 +232,14 @@ document.addEventListener('keydown', (event) => {
       }
     } else {
         console.log(event.key);
-
       currentSequenceIndex = 0; // Reinicia se a tecla errada for pressionada
     }
   });
   
   function activateInvincibilityMode() {
-    superman = false;
+    superman = true;
     // Ative o modo invencível aqui
-    console.log('Modo invencível ativado!');
-    mario.src="./assets/JUMPJET.gif"
+    jet.style.display = "block";
     console.log("clicado")
-
+    mario.style.display = "none";
   }
-
-
- no desktop display, ele passa por 4 pipes até morrer no quinto, provavelmente é da conta*/
