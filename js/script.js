@@ -128,8 +128,7 @@ function compartilhar() {
             title: 'Mario running from Brazil',
             text: `Acabei de jogar e amei! Meu Recorde
          foi ${maiorRecorde
-                }. Achas que tens o que é preciso para esmagares meu Recorde
-        ? Clica aqui.`,
+                }. Clique aqui para jogar.`,
             url: 'https://arttturslv.github.io/mario-runner/',
         })
             .then(() => console.log('Successful share'))
@@ -181,7 +180,6 @@ function contadorPause() {
     informacaoRecorde.innerHTML = "Ultimo Recorde: " + maiorRecorde;
     pontos = 0;
 }
-
 
 
 function pixelParaPorcentagem(pixel) {
