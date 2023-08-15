@@ -9,32 +9,29 @@
     <title>Mario runner</title>
 </head>
 <body>
-        <div class="game-board">
+        <div class="canvas-jogo">
             <img src="./assets/pipe.png" class="pipe">
-            <img src="./assets/mario.gif" class="mario" width="15%">
+            <img src="./assets/mario.gif" class="mario" width="5%">
             <img src="./assets/clouds.png" id="clouds">
             <img src="./assets/bullet.gif" class="bullet">
-            <img src="/assets/JUMPJET.gif" class="jet">
-
-            <div id="clouds"> </div>
+            <img src="/assets/jet.gif" class="jet">
             <div id="montains"> </div>
-            <div id="chao"> </div>
+            <div id="ground"> </div>
 
-            <div class="game-info">
-                <h3 class="record">Ultimo recorde: 0</h3>
-
+            <div class="informacao-jogo">
+                <h3 class="recorde">Ultimo recorde: 0</h3>
             </div>
 
           
-            <div class="menu overlay">
-                <button type="button" class="btn Start" onclick="startGame()">Novo jogo</button>
-                <br><button type="button" class="btn Credit" onclick="toggleCreditos('.creditos')">Créditos</button>
-                <br><button type="button" class="btn Share" onclick="compartilhar()">Compartilhar</button>
+            <div class="menu">
+                <button type="button" class="btn novo-jogo" onclick="iniciarJogo()">Novo jogo</button>
+                <br><button type="button" class="btn creditos-jogo" onclick="toggleInformacao('.informacao-creditos')">Créditos</button>
+                <br><button type="button" class="btn compartilhar-jogo" onclick="compartilhar()">Compartilhar</button>
             </div>
     
 
-            <div class="creditos">
-                <p class="icon close overlay" onclick="toggleCreditos('.creditos')">
+            <div class="informacao-creditos">
+                <p class="icon close overlay" onclick="toggleInformacao('.informacao-creditos')">
                     <strong>X</strong>
                 </p>
                 Olá, sou o artur e "criador" desse joguinho. <br>
@@ -44,6 +41,11 @@
                     • Jordan Magnuson<br>
                     • Ketlyn R.<br>
 
+            </div>
+        </div>
+        <div class="controles">
+            <button type="button" class="botao-up">↑jump↑</button>
+            <button type="button" class="botao-down">↓duck↓</button>
         </div>
 </body>
 </html>

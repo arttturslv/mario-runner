@@ -1,5 +1,4 @@
   @import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
-
   
 /* Global */
 * {
@@ -7,10 +6,20 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Silkscreen', cursive;
+    margin: 0 auto;
 }
 
+body {
+    background-color: rgb(17, 75, 6);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 /* tela do jogo */
-.game-board {
+.canvas-jogo {
     width: 99%;
     height: 600px;
     border: 1px solid black;
@@ -21,129 +30,15 @@
     margin: 0 auto;
     display: flex;
 }
-.game-info {
+
+
+/* recorde e atual */
+.informacao-jogo {
     padding: 10px;
     position: absolute;
 }
-.record {
-    font-size: 1.3vh;
-}
-
-/* cano */
-.pipe {
-    position: absolute;
-    bottom: 50px;
-    width: 5%;
-    right: -5%;
-    z-index: 20;
-}
-
-.bullet {
-    position: absolute;
-    bottom: 100px;
-    width: 5%;
-    right: -5%;
-    z-index: 20;
-}
-.jet {
-    position: absolute;
-    width: 40vh;
-    display: none;
-}
-@keyframes pipe-animation {
-    0% {
-        right: -50%;
-    }
-    0.5% {
-        right: 0%;
-    }
-    75% {
-        right: 100%;
-    }
-    100% {
-        right: 150%;
-    }
-} 
-
-@keyframes bullet-animation {
-    0% {
-        right: -500%;
-    }
-    30% {
-        right: 0%;
-    }
-    99.5% {
-        right: 100%;
-    }
-    100% {
-        right: 150%;
-    }
-    
-} 
-/* mario */
-.mario {
-    position: absolute;
-    width: 15%;
-    max-width: 10%;
-    bottom: 50px;
-    z-index: 25;
-}
-
-.jump {
-    animation: mario-jump 1s ease-in;
-}
-.death {
-    animation: mario-death 1.5s ease-in ;
-}
-.duck {
-    animation: mario-ducking 1s;
-}
-
-/* ambiente */
-
-#chao {
-    width: auto;
-    height: 200px;
-    min-width: 100%;
-    position: absolute;
-    bottom: 0%;
-    z-index: 555;
-    background: url("/assets/chao.png");
-    background-repeat: repeat;
-    background-position: 0 0;
-    background-size: auto 100%;
-  /*adjust s value for speed*/
-  }
-  
-  
-  @keyframes slide {
-    from {
-      background-position: 0 0;
-    }
-  /*use negative width if you want it to flow right to left else and positive for left to right*/
-    to {
-      background-position: -10000px 0;
-    }
-  }
-#clouds {
-    position: absolute;
-    width: 10%;
-    top: 15%; /* 10 ate 20*/
-    z-index: 0;
-    animation: clouds-animation 100s linear infinite;
-}
-
-#montains {
-    width: 100%;
-    height: 50%;
-    position: absolute;
-    background: url("/assets/background.png");
-    background-repeat:repeat;
-    background-position: 0 0;
-    background-size: auto 100%;    
-    bottom: 0px;
-    margin: 0;
-    padding: 0;   
+.recorde {
+    font-size: 0.7em;
 }
 
 
@@ -166,22 +61,17 @@
     border: 2px solid black;
     box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.15);
 }
-@media screen and (min-width: 500px) {
-    .btn {
-       font-size: 30px;
-    }
-}
-
 .btn:hover {
     color: rgb(39, 61, 46);
 }
 
+
 /* creditos */
-.creditos {
+.informacao-creditos {
     position: relative;
     padding: 30px;
     background-color: rgb(181, 206, 180);
-    font-size: 0.65em;
+    font-size: 1.5vh;
     border-radius: 5px;
     border: 2px solid black;
     box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.30);
@@ -200,6 +90,103 @@
     color: red;
 }
 
+
+/* botões para pular e abaixar */
+.controles {
+    margin: 0 auto;
+    position: relative;
+    width: 99%;
+    height: 10vh;
+    background-color: aqua;
+    display: flex;
+}
+.botao-up, .botao-down {
+    width: 100%;
+    background-color: rgb(181, 206, 180);
+    border: 1px solid black;
+}
+.botao-up:active, .botao-down:active {
+    box-shadow: rgb(115, 156, 115) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+
+/* mario */
+.mario {
+    position: absolute;
+    width: 15%;
+    max-width: 10%;
+    bottom: 50px;
+    z-index: 25;
+}
+
+/* acoes mario */
+.jump {
+    animation: mario-jump 1s ease-in;
+}
+.death {
+    animation: mario-death 1.5s ease-in ;
+}
+.duck {
+    animation: mario-ducking 1s;
+}
+
+
+/* cano */
+.pipe {
+    position: absolute;
+    bottom: 50px;
+    width: 5%;
+    right: -5%;
+    z-index: 20;
+}
+/* inimigo */
+.bullet {
+    position: absolute;
+    bottom: 100px;
+    width: 5%;
+    right: -5%;
+    z-index: 20;
+}
+/*invencibilidade*/
+.jet {
+    position: absolute;
+    width: 40vh;
+    display: none;
+}
+
+
+/* ambiente */
+#ground {
+    width: auto;
+    height: 60px;
+    min-width: 100%;
+    position: absolute;
+    bottom: 0%;
+    z-index: 555;
+    background: url("/assets/ground.png");
+    background-repeat: repeat;
+    background-position: 0 0;
+    background-size: auto 100%;
+}
+#clouds {
+    position: absolute;
+    width: 10%;
+    top: 15%; /* 10 ate 20*/
+    z-index: 0;
+    animation: clouds-animation 100s linear infinite;
+}
+#montains {
+    width: 100%;
+    height: 50%;
+    position: absolute;
+    background: url("/assets/background.png");
+    background-repeat:repeat;
+    background-position: 0 0;
+    background-size: auto 100%;    
+    bottom: 0px;
+    margin: 0;
+    padding: 0;   
+}
 
 
 /* animações */
@@ -237,6 +224,36 @@
     } 
 }
 
+@keyframes pipe-animation {
+    0% {
+        right: -50%;
+    }
+    0.5% {
+        right: 0%;
+    }
+    75% {
+        right: 100%;
+    }
+    100% {
+        right: 150%;
+    }
+} 
+@keyframes bullet-animation {
+    0% {
+        right: -500%;
+    }
+    30% {
+        right: 0%;
+    }
+    99.5% {
+        right: 100%;
+    }
+    100% {
+        right: 150%;
+    }
+    
+} 
+
 @keyframes clouds-animation {
     from {
         right: 0px;
@@ -246,51 +263,30 @@
     }
 } 
 
-
-
-
-/* Smaller than standard 960 (devices and browsers) 
-@media only screen and (min-width: 959px) {
-        .creditos {
-            max-width: 35%;
-            font-size: 1.2em;
-        }
-
-}
-
-@media only screen and (max-width: 959px) {
-    .game-board {
-        height: 400px;
+@keyframes slide {
+    from {
+      background-position: 0 0;
     }
+    to {
+      background-position: -10000px 0;
+    }
+  }
+
+@media screen and (min-width: 500px) {
     .btn {
-        font-size: 1rem;
+       font-size: 30px;
     }
 }
 
-/* Tablet Portrait size to standard 960 (devices and browsers) 
-@media only screen and (min-width: 768px) and (max-width: 959px) {
-    p{
-        font-size: 12px;
+@media screen and (min-width: 1400px) {
+    .mario {
+       max-width: 160px;
+    }
+    .duck {
+        max-width: 130px;
+    }
+    .bullet {
+        bottom: 110px;
     }
 }
 
-/* All Mobile Sizes (devices and browser) 
-@media only screen and (max-width: 767px) {
-    p{
-        font-size: 14px;
-    }
-}
-
-/* Mobile Landscape Size to Tablet Portrait (devices and browsers) 
-@media only screen and (min-width: 480px) and (max-width: 767px) {
-    p{
-        font-size: 9px;
-    }
-}
-
-/* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) 
-@media only screen and (max-width: 479px) {
-    p{
-        font-size: 7px;
-    }
-}*/

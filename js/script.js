@@ -1,245 +1,270 @@
 var gameStatus = false;
-var highest;
+var maiorRecorde;
 var pontos = 0;
 var cron;
-var superman = false;
-var qnt=0;
+var invencibilidade = false;
+var tempoJogado = 0;
 var ducking = false;
+let iteradorMacete = 0;
 
 const pipe = document.querySelector(".pipe");
 const mario = document.querySelector(".mario");
 const menu = document.querySelector(".menu");
-const informacaoRecorde = document.querySelector(".record");
-const chao = document.getElementById("chao");
+const informacaoRecorde = document.querySelector(".recorde");
+const ground = document.getElementById("ground");
 const montains = document.getElementById("montains");
 const bullet = document.querySelector(".bullet");
 const jet = document.querySelector(".jet");
-
+const botaoUp = document.querySelector(".botao-up");
+const botaoDown = document.querySelector(".botao-down");
 const clouds = document.getElementById("clouds");
-doSomething();
-    async function sleep(time) {
-        await new Promise(resolve => setTimeout(resolve, time))
-      }
-      async function doSomething() {
-        while ((true)) {
-            clouds.style.top = getRandomArbitrary(10, 15)+'vw';
-            clouds.style.width = getRandomArbitrary(15, 40)+'vh';
-                await sleep(100000);
-        }
-      }
+const macete = ['j', 'u', 'm', 'p', 'j', 'e', 't'];
 
-      async function velocidade() {
-        while (gameStatus) {
-            if(qnt<7.5) {
-                qnt+=0.1;
-            }
-            animationSpeed (qnt);
-                await sleep(1000);
-        }
-      }
+controlaNuvens();
+window.onload = novoRecorde ();
 
-function getRandomArbitrary(min, max) {
+
+function iniciarJogo() {
+    gameStatus = true;
+    incrementaVelocidadeJogo();
+
+    mario.classList.remove("death");
+    pipe.style.removeProperty('left');
+
+    menu.style.display = "none";
+    normalMario()
+
+    pontuacao();
+    loop();
+}
+
+
+async function incrementaVelocidadeJogo() {
+    while (gameStatus) {
+        if (tempoJogado < 7.5) {
+            tempoJogado += 0.005;
+        }
+        controlaAnimacao(tempoJogado);
+        await cooldown(100);
+    }
+}
+function controlaAnimacao(tempoJogado) {
+    pipe.style.animation = `pipe-animation ${calculaVelocidade(4, 10, tempoJogado)}s linear infinite`;
+    ground.style.animation = `slide ${calculaVelocidade(70, 10, tempoJogado)}s linear infinite`;
+    montains.style.animation = `slide ${calculaVelocidade(200, 10, tempoJogado)}s linear infinite`;
+    
+    let random = Math.floor(Math.random() * 20);
+    if (random % 2 == 0 && random % 4 == 0) {
+        bullet.style.animation = `bullet-animation ${calculaVelocidade(4, 10, tempoJogado)}s infinite linear`;
+    }
+}
+async function controlaNuvens() {
+    while ((true)) {
+        clouds.style.top = numeroAleatorio(10, 15) + 'vw';
+        clouds.style.width = numeroAleatorio(15, 40) + 'vh';
+        await cooldown(100000);
+    }
+}
+
+async function cooldown(time) {
+    await new Promise(resolve => setTimeout(resolve, time))
+}
+function numeroAleatorio(min, max) {
     return Math.random() * (max - min) + min;
-  }
+}
+function calculaVelocidade(velocidadeAnimacao, dificuldade, tempoJogado) {
+    return velocidadeAnimacao - (velocidadeAnimacao / (dificuldade - tempoJogado));
+}
 
+
+/* Ações do mario */
 function jump() {
     mario.classList.add("jump");
 
     setTimeout(() => {
         mario.classList.remove("jump");
-    },500); 
+    }, 500);
 }
-
 function duck() {
+    mario.src = "./assets/mario-duck.gif";
+    mario.style.width = '8.5%';
     mario.classList.add("duck");
     ducking = true;
 }
-
 function death() {
+    mario.src = "./assets/game-over.png";
+    mario.style.width = '5%';
     mario.classList.add("death");
-    qnt=0;
-    if(document.querySelector(".creditos").style.display != "block") {
+    tempoJogado = 0;
+    if (document.querySelector(".informacao-creditos").style.display != "block") {
         document.querySelector(".menu").style.display = "block";
     };
-    
+
     pipe.style.animation = "none";
     gameStatus = false;
     contadorPause();
 }
+function normalMario() {
+    mario.src = "./assets/mario.gif";
+    mario.style.width = '15%';
+    mario.style.bottom = `50px`;
+    mario.classList.remove("duck");
 
-window.onload = function() {
-    if(localStorage.getItem("recorde") != undefined) {
-        highest = parseInt(localStorage.getItem("recorde"));
+}
+
+function novoRecorde() {
+    if (localStorage.getItem("recorde") == undefined) {
+        console.log(localStorage.getItem("recorde"));
+        maiorRecorde = 0;
+    } else {
+        maiorRecorde = parseInt(localStorage.getItem("recorde"));
     }
-    document.querySelector(".record").innerHTML = "Ultimo recorde: "+highest;
+    console.log("O recorde anterior foi de: "+maiorRecorde)
+    document.querySelector(".recorde").innerHTML = "Ultimo Recorde: " + maiorRecorde;
+}
+function compartilhar() {
+    if (navigator.share !== undefined) {
+        navigator.share({
+            title: 'Mario running from Brazil',
+            text: `Acabei de jogar e amei! Meu Recorde
+         foi ${maiorRecorde
+                }. Achas que tens o que é preciso para esmagares meu Recorde
+        ? Clica aqui.`,
+            url: 'https://arttturslv.github.io/mario-runner/',
+        })
+            .then(() => console.log('Successful share'))
+            .catch((error) => console.log('Error sharing', error));
+    }
 }
 
-function compartilhar(){
-	if (navigator.share !== undefined) {
-		navigator.share({
-			title: 'Mario running from Brazil',
-			text: `Acabei de jogar e amei! Meu recorde foi ${highest}. Achas que tens o que é preciso para esmagares meu recorde? Clica aqui.`,
-			url: 'https://arttturslv.github.io/mario-runner/',
-		})
-		.then(() => console.log('Successful share'))
-		.catch((error) => console.log('Error sharing', error));
-	}
-}
-
-function toggleCreditos(name) {
+function toggleInformacao(name) {
     div = document.querySelector(name);
 
-    if(div.style.display != "block"){ //se estiver fechada, abre
+    if (div.style.display != "block") { //se estiver fechada, abre
         div.style.display = "block";
 
         mario.src = "./assets/mario-happy.gif";
         mario.style.width = '8.5%';
-        mario.style.bottom = '35px'; 
+        mario.style.bottom = `5%`;
+        mario.style.zIndex = `50541`;
         console.log("clicado")
         document.querySelector(".menu").style.display = "none"; //fecha o menu
-    } else { 
+    } else {
         div.style.display = "none"; //esconde os creditos
 
-        mario.src = "./assets/mario.gif";
-        mario.style.width = '15%';
-
-        mario.style.bottom = `50px`;
+        normalMario();
         document.querySelector(".menu").style.display = "block";  //abre o menu
     }
 }
 
 function pontuacao() {
-    if(gameStatus) {
+    if (gameStatus) {
         cron = setInterval(() => { contadorPontos(); }, 1000);
     } 
 }
 
 function contadorPontos() {
-    pontos++; 
-    informacaoRecorde.innerHTML = "Nova tentativa: "+pontos;
+    pontos++;
+    informacaoRecorde.innerHTML = "Nova tentativa: " + pontos;
     return pontos;
 }
 
 function contadorPause() {
     clearInterval(cron);
 
-    if(pontos>highest) {
-        highest = pontos;
-        localStorage.setItem("recorde", (""+highest));
+    if (pontos > maiorRecorde) {
+        maiorRecorde
+            = pontos;
+        localStorage.setItem("recorde", ("" + maiorRecorde
+        ));
     }
-    informacaoRecorde.innerHTML = "Ultimo recorde: "+highest;
-    pontos=0;
-}
-
-function startGame() {
-    gameStatus = true;
-    velocidade();
-
-    mario.classList.remove("death");
-    pipe.style.removeProperty('left');
-
-    menu.style.display = "none";
-    mario.src = "./assets/mario.gif";
-    mario.style.width = '15%';
-    mario.style.bottom = `50px`;
-    
-    pontuacao();
-    loop();
-}
-
-function animationSpeed (qnt) {
-    pipe.style.animation = `pipe-animation ${calcVelocity(4, 10, qnt)}s linear infinite`;
-    chao.style.animation = `slide ${calcVelocity(70, 10, qnt)}s linear infinite`;
-    montains.style.animation = `slide ${calcVelocity(200, 10, qnt)}s linear infinite`;
-    let random = Math.floor(Math.random() * 20);
-    if(random % 2 == 0 && random % 4 == 0 ) {
-        bullet.style.animation = `bullet-animation ${calcVelocity(4, 10, qnt)}s infinite linear`;
-    }
+    informacaoRecorde.innerHTML = "Ultimo Recorde: " + maiorRecorde;
+    pontos = 0;
 }
 
 
-function calcVelocity (animSpeed, gameDiff, qnt) {
-    return animSpeed - (animSpeed/(gameDiff-qnt));
-}
 
-function pixelsToPercentage(pixel) {
+function pixelParaPorcentagem(pixel) {
     return (pixel / window.innerWidth) * 100;
-  }
-  
+}
+
 function loop() {
     setInterval(() => {
         const pipePositionpx = pipe.offsetLeft;
-        const marioPositionBottom = +window.getComputedStyle(mario).bottom.replace('px',''); //apaga o px para retornar apenas o valor. O '+' converte em numero
+        const marioPositionBottom = +window.getComputedStyle(mario).bottom.replace('px', ''); //apaga o px para retornar apenas o valor. O '+' converte em numero
         const bulletPositionpx = bullet.offsetLeft;
 
-        if ((((bulletPositionpx <= pixelsToPercentage(170) && bulletPositionpx > 0) && ducking==false) || (pipePositionpx <= pixelsToPercentage(170) && pipePositionpx > 0 && marioPositionBottom < 90)) && superman==false) { //se o tubo chegou a encostar no mario e o tubo ainda nao passou por ele e o mario nao tenha altura, o jogo para.
+        if ((((bulletPositionpx <= pixelParaPorcentagem(170) && bulletPositionpx > 0) && ducking == false) || (pipePositionpx <= pixelParaPorcentagem(160) && pipePositionpx > 0 && marioPositionBottom < 90)) && invencibilidade == false) { //se o tubo chegou a encostar no mario e o tubo ainda nao passou por ele e o mario nao tenha altura, o jogo para.
             pipe.style.animation = 'none';
-            chao.style.animation = "none";
+            ground.style.animation = "none";
             montains.style.animation = "none";
             bullet.style.animation = "none";
 
             pipe.style.left = `${pipePositionpx}px`;
 
             mario.style.bottom = `${marioPositionBottom}px`;
-            mario.src = "./assets/game-over.png";
-            mario.style.width = '5%';
-            
+
+
             death();
             clearInterval(loop);
         }
-    },10);
+    }, 10);
 }
 
-document.addEventListener('keydown', press);
-function press(e) {
-    if(e.keyCode === 40 || e.keyCode === 83  && gameStatus) {
-        mario.src = "./assets/mario-duck.gif";
-        mario.style.width = '8.5%';
+/* INVENCIBILIDADE */
+function ativarInvencibilidade() {
+    console.log("Macete ativado! Para desativar, recarregue a pagina.")
+    console.log("Pontos feitos não serão contabilizados.")
+    invencibilidade = true;
+    jet.style.display = "block";
+    mario.style.display = "none";
+}
+
+/* CONTROLES */
+botaoDown.addEventListener('mouseup', function() {
+    normalMario();
+    ducking = false;
+
+});
+
+botaoDown.addEventListener('mousedown', function() {
+    iteradorMacete=0;
+    duck();
+});
+
+botaoDown.addEventListener('touchstart', function() {
+    iteradorMacete=0;
+    duck();
+});
+
+botaoUp.addEventListener('mousedown', function() {
+    jump();
+});
+
+/*teclado*/
+
+document.addEventListener('keydown', apertarTecla);
+document.addEventListener('keyup', soltarTecla);
+
+function apertarTecla(e) {
+    if(gameStatus==false & e.key === macete[iteradorMacete]) {
+        iteradorMacete++;
+        if (iteradorMacete === macete.length) {
+            ativarInvencibilidade();
+            i = 0; // Reinicia o índice
+        }
+    } else if (e.key === 's' || e.key === 'ArrowDown' && gameStatus) {
+        iteradorMacete=0;
         duck();
     } else {
+        iteradorMacete=0;
         jump();
     }
 }
 
-document.addEventListener('keyup', release);
-function release(e){
+function soltarTecla(e) {
     ducking = false;
-
-    if(e.keyCode === 40 || e.keyCode === 83 && gameStatus) {
-        mario.src = "./assets/mario.gif";
-        mario.style.width = '15%';
-        mario.classList.remove("duck");
-  } else if (e.keyCode ===40 || e.keyCode===83 && gameStatus == false) {
-    mario.src = "./assets/game-over.png";
-    mario.style.width = '5%';
-    // mario.style.marginLeft = '60px';
-  }
+    if (e.key === 's' || e.key === 'ArrowDown' && gameStatus) {
+        normalMario();
+    } 
 }
-
-
-
-
-const secretSequence = ['j', 'u', 'm', 'p', 'j', 'e', 't'];
-let currentSequenceIndex = 0;
-
-document.addEventListener('keydown', (event) => {
-    if (event.key === secretSequence[currentSequenceIndex]) {
-      currentSequenceIndex++;
-        console.log(event.key);
-      if (currentSequenceIndex === secretSequence.length) {
-        activateInvincibilityMode();
-        currentSequenceIndex = 0; // Reinicia o índice
-      }
-    } else {
-        console.log(event.key);
-      currentSequenceIndex = 0; // Reinicia se a tecla errada for pressionada
-    }
-  });
-  
-  function activateInvincibilityMode() {
-    superman = true;
-    // Ative o modo invencível aqui
-    jet.style.display = "block";
-    console.log("clicado")
-    mario.style.display = "none";
-  }
