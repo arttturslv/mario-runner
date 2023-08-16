@@ -17,6 +17,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  overflow-y: hidden;
 }
 /* tela do jogo */
 .canvas-jogo {
