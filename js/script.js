@@ -239,6 +239,10 @@ botaoUp.addEventListener('touchstart', function() {
     jump();
 });
 
+botaoUp.addEventListener('touchcancel', function() {
+    soltarTecla();
+});
+
 /*teclado*/
 
 document.addEventListener('keydown', apertarTecla);
