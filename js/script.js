@@ -234,8 +234,8 @@ botaoDown.addEventListener('touchstart', function() {
     iteradorMacete=0;
     duck();
 });
-
-botaoUp.addEventListener('mousedown', function() {
+//era mousedown
+botaoUp.addEventListener('touchstart', function() {
     jump();
 });
 
