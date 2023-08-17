@@ -143,7 +143,7 @@ body {
 .bullet {
     position: absolute;
     bottom: 100px;
-    width: 5%;
+    width: 8%;
     right: -5%;
     z-index: 20;
 }
@@ -286,7 +286,7 @@ body {
         max-width: 130px;
     }
     .bullet {
-        bottom: 110px;
+        bottom: 10px;
     }
 }
 

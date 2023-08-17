@@ -38,7 +38,6 @@ function iniciarJogo() {
     loop();
 }
 
-
 async function incrementaVelocidadeJogo() {
     while (gameStatus) {
         if (tempoJogado < 7.5) {
@@ -54,7 +53,9 @@ function controlaAnimacao(tempoJogado) {
     montains.style.animation = `slide ${calculaVelocidade(200, 10, tempoJogado)}s linear infinite`;
     
     let random = Math.floor(Math.random() * 20);
-    if (random % 2 == 0 && random % 4 == 0) {
+    console.log("random ="+random);
+    if (random % 2 == 0 || random % 7 == 0) {
+        console.log("rand - confirmed")
         bullet.style.animation = `bullet-animation ${calculaVelocidade(4, 10, tempoJogado)}s infinite linear`;
     }
 }
@@ -79,17 +80,22 @@ function calculaVelocidade(velocidadeAnimacao, dificuldade, tempoJogado) {
 
 /* Ações do mario */
 function jump() {
-    mario.classList.add("jump");
-
-    setTimeout(() => {
-        mario.classList.remove("jump");
-    }, 500);
+    if(gameStatus) {
+        mario.classList.add("jump");
+        setTimeout(() => {
+            mario.classList.remove("jump");
+        }, 500);
+    }
 }
 function duck() {
-    mario.src = "./assets/mario-duck.gif";
-    mario.style.width = '8.5%';
-    mario.classList.add("duck");
-    ducking = true;
+
+    if(gameStatus) {
+        mario.src = "./assets/mario-duck.gif";
+        mario.classList.add("duck");
+        mario.style.width = '8.5%';
+        ducking = true;
+    }
+
 }
 function death() {
     mario.src = "./assets/game-over.png";
@@ -144,7 +150,8 @@ function toggleInformacao(name) {
 
         mario.src = "./assets/mario-happy.gif";
         mario.style.width = '8.5%';
-        mario.style.bottom = `5%`;
+        mario.style.position = "absolute";
+        mario.style.bottom = `7%`;
         mario.style.zIndex = `50541`;
         console.log("clicado")
         document.querySelector(".menu").style.display = "none"; //fecha o menu
@@ -219,26 +226,35 @@ function ativarInvencibilidade() {
 }
 
 /* CONTROLES */
-botaoDown.addEventListener('mouseup', function() {
-    normalMario();
-    ducking = false;
-
-});
-
-botaoDown.addEventListener('mousedown', function() {
-    iteradorMacete=0;
-    duck();
-});
 
 botaoDown.addEventListener('touchstart', function() {
-    iteradorMacete=0;
     duck();
-});
-
-botaoUp.addEventListener('mousedown', function() {
+  });
+  botaoDown.addEventListener('touchend', function() {
+    normalMario();
+    ducking = false;
+  });
+  
+  botaoUp.addEventListener('touchstart', function() {
     jump();
-});
-
+  });  
+  
+  botaoUp.addEventListener('mousedown', function() {
+    console.log("UP")
+    jump();
+  });
+  
+  botaoDown.addEventListener('mousedown', function() {
+    console.log("Down")
+    duck();
+  });
+  botaoDown.addEventListener('mouseup', function() {
+    console.log("soltei")
+    normalMario();
+    ducking = false;
+  });
+  
+  
 /*teclado*/
 
 document.addEventListener('keydown', apertarTecla);
