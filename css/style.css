@@ -18,6 +18,17 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+html, body {
+    height: 100%;
+}
+html {
+    overflow-y: hidden;
+}
+body {
+    overflow-y: scroll;
+}
+
 /* tela do jogo */
 .canvas-jogo {
     width: 99%;

@@ -242,19 +242,8 @@ botaoDown.addEventListener('touchstart', function() {
   botaoUp.addEventListener('mousedown', function() {
     console.log("UP")
     jump();
-  });
-  
-  botaoDown.addEventListener('mousedown', function() {
-    console.log("Down")
-    duck();
-  });
-  botaoDown.addEventListener('mouseup', function() {
-    console.log("soltei")
-    normalMario();
-    ducking = false;
-  });
-  
-  
+});
+
 /*teclado*/
 
 document.addEventListener('keydown', apertarTecla);

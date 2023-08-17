@@ -20,4 +20,6 @@ Além das funcionalidades mencionadas acima, várias outras foram implementadas 
 -   O menu inicial para o acesso aos creditos.
 -   Botão de compartilhamento para desafiar amigos a jogar o **Mario Runner**.
 -   Capacidade de agachar-se.
--  Animações para tornar o jogo mais visualmente atraente.
+-   Novo inimigo, a bala de canhão.
+-   Um macete que deve ser digitado ainda no menu "jumpjet".
+-   Animações para tornar o jogo mais visualmente atraente.
